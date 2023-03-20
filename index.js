@@ -18,20 +18,35 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const ramadanPayers = client.db("ramadanPayers").collection("ramadanduya");
+    const ramadanQna = client.db("ramadanPayers").collection("ramadanqna");
 
-    // get
-    app.get("/payers", async (req, res) => {
+    // get ramadan payers
+    app.get("/prayers", async (req, res) => {
       const query = {};
       const cursor = ramadanPayers.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
+    // get ramadan QNA
+    app.get("/ramadanQna", async (req, res) => {
+      const query = {};
+      const cursor = ramadanQna.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
-    // post
-    app.post("/ramadanPayers", async (req, res) => {
+    // post ramadan payers
+    app.post("/ramadanPrayers", async (req, res) => {
       const duya = req.body;
       const result = await ramadanPayers.insertOne(duya);
       res.send(result);
+    });
+    // post ramadan QNA
+    app.post("/ramadanQna", async (req, res) => {
+      const qna = req.body;
+      const result = await ramadanQna.insertOne(qna);
+      res.send(result);
+      console.log(req)
     });
   } finally {
   }
