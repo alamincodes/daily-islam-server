@@ -19,6 +19,7 @@ async function run() {
   try {
     const ramadanPayers = client.db("ramadanPayers").collection("ramadanduya");
     const ramadanQna = client.db("ramadanPayers").collection("ramadanqna");
+    const ramadanZakat = client.db("ramadanPayers").collection("ramadanZakat");
 
     // get ramadan payers
     app.get("/prayers", async (req, res) => {
@@ -34,6 +35,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // get ramadan Zakat QNA
+    app.get("/zakat", async (req, res) => {
+      const query = {};
+      const cursor = ramadanZakat.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // post ramadan payers
     app.post("/ramadanPrayers", async (req, res) => {
@@ -41,12 +49,18 @@ async function run() {
       const result = await ramadanPayers.insertOne(duya);
       res.send(result);
     });
+    // post ramadan zakat
+    app.post("/zakat", async (req, res) => {
+      const zakat = req.body;
+      const result = await ramadanZakat.insertOne(zakat);
+      res.send(result);
+    });
     // post ramadan QNA
     app.post("/ramadanQna", async (req, res) => {
       const qna = req.body;
       const result = await ramadanQna.insertOne(qna);
       res.send(result);
-      console.log(req)
+      console.log(req);
     });
   } finally {
   }
